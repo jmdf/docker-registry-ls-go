@@ -30,7 +30,7 @@ workflows:
       - build:
           filters:
             branches:
-              only: /^\d+\.\d+\.\d+$/
+              only: /.*/
             tags:
               only: /^\d+\.\d+\.\d+$/
       - publish-github-release:
