@@ -6,7 +6,7 @@ jobs:
     working_directory: /go/src/github.com/jmdf/docker-registry-ls-go
     steps:
       - checkout
-      - run: go build -v -o .artifacts/docker-registry-ls
+      - run: go build -v -o ./artifacts/docker-registry-ls
 
       - store_artifacts:
           path: ./artifacts/
