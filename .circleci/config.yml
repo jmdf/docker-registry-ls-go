@@ -1,17 +1,9 @@
 version: 2
 jobs:
   build:
-    working_directory: /go/src/github.com/jmdf/docker-registry-ls-go
     docker:
-      - image: circleci/golang:latest
+      - image: circleci/golang:1.9
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     steps:
       - checkout
-      - run:
-          name: build
-          command: |
-            mkdir -p /tmp/gobuild
-            go build -v
-      - save_cache:
-          key: build-{{ .Branch }}-{{ .Environment.CIRCLE_BUILD_NUM }}
-          paths:
-              - /tmp/gobuild
+      - run: go build -o /tmp/docker-registry-ls
