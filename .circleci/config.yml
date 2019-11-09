@@ -10,18 +10,25 @@ jobs:
 
       - store_artifacts:
           path: ./artifacts/
+      
+      - save_cache:
+          key: artifacts-cache
+          paths: ./artifacts
 
   publish-github-release:
     docker:
       - image: cibuilds/github:0.10
     steps:
+      - restore_cache:
+          keys: artifacts-cache
+
       - attach_workspace:
           at: /go/src/github.com/jmdf/docker-registry-ls-go/artifacts
       - run:
           name: "Publish Release on GitHub"
           command: |
             VERSION=${CIRCLE_TAG}
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} /go/src/github.com/jmdf/docker-registry-ls-go/artifacts
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts
 
 workflows:
   version: 2
