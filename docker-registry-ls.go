@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"crypto/tls"
 )
 
 type RepoLists struct {
@@ -24,8 +25,13 @@ func main() {
 	// Command line options
 	serverPtr := flag.String("s", "", "Server to query")
 	repoPtr := flag.String("r", "", "List tags from specific repo")
+	verifyCertPtr := flag.Bool("k", false, "Allow insecure server connections when using SSL")
 	flag.Parse()
 
+	// Allow insecure connections if flag is set
+	if *verifyCertPtr == true {
+		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	}
 	// Do we have a server?
 	if dockerRegistryEnv == "" && *serverPtr == "" {
 		println("No server specified, use variable DOCKER_REGISTRY or '-s'")
