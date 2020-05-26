@@ -26,4 +26,4 @@ jobs:
       run: go build -v -o docker-registry-ls .
 
     - name: Test
-      run: go run . --help
+      run: ./docker-registry-ls --help
